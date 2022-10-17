@@ -18,8 +18,10 @@ const RegisterReactBootstrap = () => {
 
     // target full form
     const handleSubmit = (event) => {
-        const email = event.target.email.value
-        const password = event.target.password.value
+        event.preventDefault()
+        const form = event.target
+        const email = form.email.value
+        const password = form.password.value
 
         // custum password step2
         if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
@@ -36,19 +38,22 @@ const RegisterReactBootstrap = () => {
         setPassError('')
 
 
-        event.preventDefault()
+
+        setSuccess(false)
         //console.log(email, password)
         createUserWithEmailAndPassword(auth, email, password)
             .then(result => {
                 // Signed in 
                 const user = result.user;
                 setSuccess(true)
+                form.reset('')
                 console.log(user)
 
             })
             .catch((error) => {
 
                 console.log('error', error)
+                setPassError(error)
             });
     }
 
