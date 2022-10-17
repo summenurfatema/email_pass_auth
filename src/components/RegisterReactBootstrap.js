@@ -1,9 +1,10 @@
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import app from '../firebase/firebase.init';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const auth = getAuth(app)
 
@@ -47,6 +48,7 @@ const RegisterReactBootstrap = () => {
                 const user = result.user;
                 setSuccess(true)
                 form.reset('')
+                verifyEmail()
                 console.log(user)
 
             })
@@ -56,6 +58,16 @@ const RegisterReactBootstrap = () => {
                 setPassError(error)
             });
     }
+
+    // email verification msg send
+
+    const verifyEmail = () => {
+        sendEmailVerification(auth.currentUser)
+            .then(() => {
+                alert('Check your mailbox')
+            })
+    }
+
 
     return (
         <div className='w-50 mx-auto'>
@@ -76,6 +88,7 @@ const RegisterReactBootstrap = () => {
                     Submit
                 </Button>
             </Form>
+            <p>Already have an account  ?please <Link to='/login'>Log in.</Link> </p>
         </div>
     );
 };
