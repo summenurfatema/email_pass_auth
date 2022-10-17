@@ -10,8 +10,11 @@ const auth = getAuth(app)
 const RegisterReactBootstrap = () => {
 
     // custum password step1
-
     const [passError, setPassError] = useState('')
+
+    // login success status
+
+    const [success, setSuccess] = useState(false)
 
     // target full form
     const handleSubmit = (event) => {
@@ -39,6 +42,7 @@ const RegisterReactBootstrap = () => {
             .then(result => {
                 // Signed in 
                 const user = result.user;
+                setSuccess(true)
                 console.log(user)
 
             })
@@ -62,6 +66,7 @@ const RegisterReactBootstrap = () => {
                     <Form.Control type="password" name='password' placeholder="Password" required />
                 </Form.Group>
                 <p className='text-danger'>{passError}</p>
+                {success && <p className='text-success'>Login successfully</p>}
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
