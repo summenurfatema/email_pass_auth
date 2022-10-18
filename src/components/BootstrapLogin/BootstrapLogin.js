@@ -1,5 +1,5 @@
 
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -17,6 +17,9 @@ const BootstrapLogin = () => {
     // login success status
 
     const [success, setSuccess] = useState(false)
+
+    // forget email
+    const [userEmail, setUserEmail] = useState('')
 
     // target full form
     const handleSubmit = (event) => {
@@ -59,19 +62,37 @@ const BootstrapLogin = () => {
             });
     }
 
+    // blur status for fp
+
+    const handleBlur = event => {
+
+        const email = event.target.value
+        setUserEmail(email)
+
+    }
+
+    // forget password
+
+    const handleForgetPassword = () => {
+        sendPasswordResetEmail(auth, userEmail)
+        alert('Email for forget password')
+    }
+
     return (
         <div className='w-50 mx-auto'>
             <h1 className='text-success'>Please login !!!</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" name='email' placeholder="Enter email" required />
+                    <Form.Control type="email" onClick={handleBlur} name='email' placeholder="Enter email" required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" name='password' placeholder="Password" required />
                 </Form.Group>
+                <p>
+                    <button type="button" onClick={handleForgetPassword} class="btn btn-link">Forget password ?</button></p>
                 <p className='text-danger'>{passError}</p>
                 {success && <p className='text-success'>Login successfully</p>}
                 <Button variant="primary" type="submit">
